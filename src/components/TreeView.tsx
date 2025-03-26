@@ -1,9 +1,25 @@
-import { Box, Typography, IconButton, Stack } from '@mui/material';
+import { Box, Typography, IconButton, Toolbar, Divider } from '@mui/material';
 import ExpandAllIcon from '@mui/icons-material/UnfoldMore';
 import CollapseAllIcon from '@mui/icons-material/UnfoldLess';
 import { TreeNode } from '../types';
 import { Tree } from './Tree';
 import { useState } from 'react';
+
+function getDefaultExpandedNodes(node: TreeNode): Set<string> {
+  const expanded = new Set<string>();
+  const visit = (node: TreeNode) => {
+    if (node.children) {
+      if (node.children.length > 1) {
+        expanded.add(node.id);
+      } else if (node.children.length === 1) {
+        expanded.add(node.id);
+        visit(node.children[0]);
+      }
+    }
+  };
+  visit(node);
+  return expanded;
+}
 
 interface TreeViewProps {
   tree: TreeNode | null;
@@ -12,7 +28,9 @@ interface TreeViewProps {
 }
 
 export function TreeView({ tree, source, onNodeUpdate }: TreeViewProps) {
-  const [expandedNodes, setExpandedNodes] = useState<Set<string>>(new Set());
+  const [expandedNodes, setExpandedNodes] = useState<Set<string>>(() => 
+    tree ? getDefaultExpandedNodes(tree) : new Set()
+  );
 
   const handleExpandAll = () => {
     if (!tree) return;
@@ -32,14 +50,27 @@ export function TreeView({ tree, source, onNodeUpdate }: TreeViewProps) {
   return (
     <>
       {tree && (
-        <Stack direction="row" spacing={1} mb={1}>
+        <Toolbar
+          variant="dense"
+          sx={{
+            minHeight: 36,
+            borderRadius: 1,
+            bgcolor: 'background.paper',
+            border: 1,
+            borderColor: 'divider',
+            mb: 1,
+            gap: 1,
+            px: 1,
+          }}
+        >
           <IconButton onClick={handleExpandAll} size="small" title="Expand All">
-            <ExpandAllIcon />
+            <ExpandAllIcon fontSize="small" />
           </IconButton>
+          <Divider orientation="vertical" flexItem />
           <IconButton onClick={handleCollapseAll} size="small" title="Collapse All">
-            <CollapseAllIcon />
+            <CollapseAllIcon fontSize="small" />
           </IconButton>
-        </Stack>
+        </Toolbar>
       )}
       <Box sx={{ 
         flex: 1, 
