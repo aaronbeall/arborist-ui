@@ -1,4 +1,4 @@
-# Data Tree Editor
+# Arborist UI (Data Tree Editor)
 
 A modern web application for visualizing and editing hierarchical data structures in various formats (JSON, XML, YAML).
 
