@@ -6,6 +6,8 @@ import FolderIcon from '@mui/icons-material/Folder';
 import FolderOpenIcon from '@mui/icons-material/FolderOpen';
 import ListIcon from '@mui/icons-material/List';
 import TextFieldsIcon from '@mui/icons-material/TextFields';
+import NumbersIcon from '@mui/icons-material/Numbers';
+import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import { TreeNode } from '../types';
 import { EditableNode } from './EditableNode';
 
@@ -31,6 +33,12 @@ export function Tree({ node, level = 0, onNodeUpdate, arrayIndex }: TreeProps) {
       return expanded ? <ListIcon color="primary" /> : <ListIcon color="action" />;
     } else if (node.type === 'object') {
       return expanded ? <FolderOpenIcon color="primary" /> : <FolderIcon color="action" />;
+    } else if (typeof node.value === 'number') {
+      return <NumbersIcon color="action" />;
+    } else if (typeof node.value === 'boolean') {
+      return <CheckBoxIcon color="action" />;
+    } else if (typeof node.value === 'string') {
+      return <TextFieldsIcon color="action" />;
     } else {
       return <TextFieldsIcon color="action" />;
     }
@@ -80,4 +88,4 @@ export function Tree({ node, level = 0, onNodeUpdate, arrayIndex }: TreeProps) {
       )}
     </Box>
   );
-} 
+}

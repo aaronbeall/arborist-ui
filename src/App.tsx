@@ -7,7 +7,7 @@ import { formats, validateFormat } from './config/formats';
 import { exampleTree } from './test/testData';
 import { SourceTextView } from './components/SourceTextView';
 import { TreeView } from './components/TreeView';
-import logo from './assets/logo.svg'; // Import the logo
+import logo from './assets/logo.svg';
 
 type TabName = 'sourceText' | 'treeView';
 
@@ -209,7 +209,7 @@ function App() {
                     Arborist UI
                   </Typography>
                   <Typography variant="subtitle1" component="h2" color="secondary">
-                    Data Tree Editor
+                    Tree Data View & Editor
                   </Typography>
                 </Box>
               </Box>
