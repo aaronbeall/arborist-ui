@@ -2,15 +2,16 @@ import { Menu, MenuItem } from '@mui/material';
 import TextFieldsIcon from '@mui/icons-material/TextFields';
 import NumbersIcon from '@mui/icons-material/Numbers';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import { NodeValue } from '../types';
 
 interface TypeSelectorProps {
   anchorEl: HTMLElement | null;
   onClose: () => void;
-  onTypeSelect: (newType: 'string' | 'number' | 'boolean') => void;
+  onTypeSelect: (newType: NodeValue) => void;
 }
 
 export function TypeSelector({ anchorEl, onClose, onTypeSelect }: TypeSelectorProps) {
-  const handleSelect = (type: 'string' | 'number' | 'boolean') => {
+  const handleSelect = (type: NodeValue) => {
     onTypeSelect(type);
     onClose();
   };
