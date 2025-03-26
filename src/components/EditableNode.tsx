@@ -5,7 +5,7 @@ import { TreeNode } from '../types';
 
 interface EditableNodeProps {
   node: TreeNode;
-  onEdit: (prevNode: TreeNode, editedNode: TreeNode) => void;
+  onEdit: (node: TreeNode) => void;
 }
 
 export function EditableNode({ node, onEdit }: EditableNodeProps) {
@@ -14,7 +14,7 @@ export function EditableNode({ node, onEdit }: EditableNodeProps) {
   const [showEditButton, setShowEditButton] = useState(false);
 
   const handleSave = () => {
-    onEdit(node, { ...node, value: editValue });
+    onEdit({ ...node, value: editValue });
     setIsEditing(false);
   };
 

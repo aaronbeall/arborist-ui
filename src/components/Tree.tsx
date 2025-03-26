@@ -14,7 +14,7 @@ import { EditableNode } from './EditableNode';
 interface TreeProps {
   node: TreeNode;
   level?: number;
-  onNodeUpdate: (updatedNode: TreeNode) => void;
+  onNodeUpdate: (node: TreeNode) => void;
   arrayIndex?: number;
 }
 
