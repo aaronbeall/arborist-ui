@@ -17,17 +17,22 @@ interface TreeProps {
   level?: number;
   onNodeUpdate: (node: TreeNode) => void;
   arrayIndex?: number;
+  expandedNodes: Set<string>;
+  onExpandedNodesChange: (nodes: Set<string>) => void;
 }
 
-export function Tree({ node, level = 0, onNodeUpdate, arrayIndex }: TreeProps) {
-  const [expanded, setExpanded] = React.useState(true);
+export function Tree({ node, level = 0, onNodeUpdate, expandedNodes, onExpandedNodesChange, arrayIndex }: TreeProps) {
   const [typeMenuAnchor, setTypeMenuAnchor] = React.useState<null | HTMLElement>(null);
   const hasChildren = node.children && node.children.length > 0;
 
-  const handleToggle = () => {
-    if (hasChildren) {
-      setExpanded(!expanded);
+  const handleToggle = (nodeId: string) => {
+    const newExpanded = new Set(expandedNodes);
+    if (newExpanded.has(nodeId)) {
+      newExpanded.delete(nodeId);
+    } else {
+      newExpanded.add(nodeId);
     }
+    onExpandedNodesChange(newExpanded);
   };
 
   const handleTypeClick = (event: React.MouseEvent<HTMLElement>) => {
@@ -55,9 +60,9 @@ export function Tree({ node, level = 0, onNodeUpdate, arrayIndex }: TreeProps) {
 
   const getNodeIcon = () => {
     if (node.type === 'array') {
-      return expanded ? <ListIcon color="primary" /> : <ListIcon color="action" />;
+      return expandedNodes.has(node.id) ? <ListIcon color="primary" /> : <ListIcon color="action" />;
     } else if (node.type === 'object') {
-      return expanded ? <FolderOpenIcon color="primary" /> : <FolderIcon color="action" />;
+      return expandedNodes.has(node.id) ? <FolderOpenIcon color="primary" /> : <FolderIcon color="action" />;
     } else if (node.value !== undefined) {
       // For property nodes, return clickable type icon
       const icon = typeof node.value === 'number' ? <NumbersIcon color="action" />
@@ -89,10 +94,10 @@ export function Tree({ node, level = 0, onNodeUpdate, arrayIndex }: TreeProps) {
         {hasChildren && (
           <IconButton
             size="small"
-            onClick={handleToggle}
+            onClick={() => handleToggle(node.id)}
             sx={{ p: 0.5, minWidth: 24 }}
           >
-            {expanded ? <ExpandMoreIcon /> : <ChevronRightIcon />}
+            {expandedNodes.has(node.id) ? <ExpandMoreIcon /> : <ChevronRightIcon />}
           </IconButton>
         )}
         {!hasChildren && <Box sx={{ width: 24 }} />}
@@ -110,7 +115,7 @@ export function Tree({ node, level = 0, onNodeUpdate, arrayIndex }: TreeProps) {
         onTypeSelect={handleTypeSelect}
       />
       {hasChildren && (
-        <Collapse in={expanded}>
+        <Collapse in={expandedNodes.has(node.id)}>
           {node.children?.map((child, index) => (
             <Tree
               key={child.id}
@@ -118,6 +123,8 @@ export function Tree({ node, level = 0, onNodeUpdate, arrayIndex }: TreeProps) {
               level={level + 1}
               onNodeUpdate={onNodeUpdate}
               arrayIndex={node.type === 'array' ? index : undefined}
+              expandedNodes={expandedNodes}
+              onExpandedNodesChange={onExpandedNodesChange}
             />
           ))}
         </Collapse>
