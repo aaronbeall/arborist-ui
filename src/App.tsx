@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect, useMemo } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { CssBaseline, Box, Tab, Tabs, Typography, TextField, Select, MenuItem, Alert, IconButton, useMediaQuery, Paper } from '@mui/material';
+import { CssBaseline, Box, Tab, Tabs, Typography, Alert, IconButton, useMediaQuery, Paper } from '@mui/material';
 import { Brightness4, Brightness7 } from '@mui/icons-material';
 import { DataFormat, TreeNode } from './types';
 import { formats, detectFormat } from './config/formats';
@@ -99,6 +99,22 @@ function App() {
       setError(error instanceof Error ? error.message : 'Failed to convert format');
     }
   }, [source, format, lastParsedSource, tree]);
+
+  const handleFormat = useCallback(async () => {
+    if (!source) return;
+    try {
+      setError(null);
+      const adapter = formats[format].adapter;
+      const parsed = await adapter.parse(source);
+      const formatted = await adapter.stringify(parsed);
+      setSource(formatted);
+      setLastParsedSource(formatted);
+      setTree(parsed);
+    } catch (error) {
+      console.error('Error formatting:', error);
+      setError(error instanceof Error ? error.message : 'Failed to format');
+    }
+  }, [source, format]);
 
   const handleTabChange = useCallback(async (_: React.SyntheticEvent, newValue: TabName) => {
     if (newValue === 'treeView' && source !== lastParsedSource) {
@@ -224,6 +240,7 @@ function App() {
               format={format}
               onSourceChange={handleSourceChange}
               onFormatChange={handleFormatChange}
+              onFormat={handleFormat}
             />
           )}
 

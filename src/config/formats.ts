@@ -5,6 +5,7 @@ import { DataFormat } from '../types';
 
 interface FormatConfig {
   name: DataFormat;
+  displayName: string;
   adapter: JsonAdapter | XmlAdapter | YamlAdapter;
   detect: (text: string) => boolean;
 }
@@ -12,6 +13,7 @@ interface FormatConfig {
 export const formats: Record<DataFormat, FormatConfig> = {
   json: {
     name: 'json',
+    displayName: 'JSON',
     adapter: new JsonAdapter(),
     detect: (text: string) => {
       try {
@@ -24,6 +26,7 @@ export const formats: Record<DataFormat, FormatConfig> = {
   },
   xml: {
     name: 'xml',
+    displayName: 'XML',
     adapter: new XmlAdapter(),
     detect: (text: string) => {
       const trimmed = text.trim();
@@ -32,6 +35,7 @@ export const formats: Record<DataFormat, FormatConfig> = {
   },
   yaml: {
     name: 'yaml',
+    displayName: 'YAML',
     adapter: new YamlAdapter(),
     detect: (text: string) => {
       const trimmed = text.trim();
