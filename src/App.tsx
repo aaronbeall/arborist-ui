@@ -3,7 +3,7 @@ import { ThemeProvider, createTheme } from '@mui/material/styles';
 import { CssBaseline, Box, Tab, Tabs, Typography, Alert, IconButton, useMediaQuery, Paper } from '@mui/material';
 import { Brightness4, Brightness7 } from '@mui/icons-material';
 import { DataFormat, TreeNode } from './types';
-import { formats, detectFormat } from './config/formats';
+import { formats, validateFormat } from './config/formats';
 import { exampleTree } from './test/testData';
 import { SourceTextView } from './components/SourceTextView';
 import { TreeView } from './components/TreeView';
@@ -68,14 +68,14 @@ function App() {
     }
   }, []);
 
-  const handleSourceChange = useCallback((newSource: string) => {
+  const handleSourceChange = useCallback(async (newSource: string) => {
     setSource(newSource);
     setError(null);
-    const newFormat = detectFormat(newSource);
-    if (newFormat) {
+    const newFormat = await validateFormat(newSource, format);
+    if (newFormat !== format) {
       setFormat(newFormat);
     }
-  }, []);
+  }, [format]);
 
   const handleFormatChange = useCallback(async (newFormat: DataFormat) => {
     if (!source) return;

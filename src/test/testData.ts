@@ -138,7 +138,8 @@ export const exampleTree: TreeNode = {
   ]
 };
 
-export const expectedYaml = `project:
+export const expectedYaml = 
+`project:
   metadata:
     name: Example Project
     version: 1.0.0
@@ -181,7 +182,8 @@ export const expectedYaml = `project:
       - Bob Wilson
 `;
 
-export const expectedJson = `{
+export const expectedJson = 
+`{
   "project": {
     "metadata": {
       "name": "Example Project",
@@ -305,3 +307,66 @@ export const expectedXml = `<?xml version="1.0" encoding="UTF-8" standalone="yes
     </stats>
   </project>
 </root>`;
+
+export const expectedJavaScript = 
+`{
+  project: {
+    metadata: {
+      name: 'Example Project',
+      version: '1.0.0',
+      description: 'A sample project demonstrating various data types'
+    },
+    authors: [
+      {
+        name: 'John Doe',
+        email: 'john@example.com',
+        role: 'Lead Developer'
+      },
+      {
+        name: 'Jane Smith',
+        email: 'jane@example.com',
+        role: 'Developer'
+      }
+    ],
+    settings: {
+      enabled: true,
+      maxItems: 100,
+      theme: 'dark',
+      allowedOrigins: [
+        'https://example.com',
+        'https://api.example.com'
+      ]
+    },
+    dependencies: [
+      {
+        name: 'react',
+        version: '^18.2.0',
+        type: 'production',
+        peerDependencies: [
+          'react-dom',
+          'react-router'
+        ]
+      },
+      {
+        name: 'typescript',
+        version: '^5.0.0',
+        type: 'development'
+      }
+    ],
+    tags: [
+      'javascript',
+      'typescript',
+      'react'
+    ],
+    lastUpdated: '2024-03-21T12:00:00Z',
+    stats: {
+      views: 1234,
+      likes: 56,
+      comments: 7,
+      topContributors: [
+        'Alice Johnson',
+        'Bob Wilson'
+      ]
+    }
+  }
+}`;

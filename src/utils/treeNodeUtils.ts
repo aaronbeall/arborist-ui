@@ -5,18 +5,18 @@ const walk = (tree: TreeNode, callback: (node: TreeNode, parent?: TreeNode) => v
   tree.children?.forEach(child => walk(child, callback, tree));
 };
 
-export const setTreeNodeArrayElementNames = (tree: TreeNode, name: string, parentName?: string) => {
+export const removeTreeNodeArrayElementNames = (tree: TreeNode, parentName?: string) => {
   walk(tree, (node, parent) => {
     if (parent?.type === 'array' && (!parentName || parent?.name === parentName)) {
-      node.name = name;
+      node.name = "";
     }
   });
   return tree;
 };
 
-export const transformTreeNodeValues = (tree: TreeNode, map: (value?: NodeValue) => NodeValue | undefined) => {
+export const transformTreeNodeValues = (tree: TreeNode, transform: (value?: NodeValue) => NodeValue | undefined) => {
   walk(tree, node => {
-    node.value = map(node.value);
+    node.value = transform(node.value);
   });
   return tree;
 }

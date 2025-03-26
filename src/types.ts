@@ -1,4 +1,4 @@
-export type DataFormat = 'json' | 'xml' | 'yaml';
+export type DataFormat = 'json' | 'xml' | 'yaml' | 'javascript';
 
 export type NodeType = 'array' | 'object' | 'property';
 

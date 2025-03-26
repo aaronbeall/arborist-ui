@@ -4,29 +4,29 @@ jest.mock('../../utils/idGenerator', () => ({
 }));
 (utils.generateId as jest.Mock).mockReturnValue('mock-id');
 
-import { JsonAdapter } from '../JsonAdapter';
-import { exampleTree, expectedJson } from '../../test/testData';
+import { JavaScriptAdapter } from '../JavaScriptAdapter';
+import { exampleTree, expectedJavaScript } from '../../test/testData';
 import { removeTreeNodeArrayElementNames } from '../../utils/treeNodeUtils';
 
-describe('JsonAdapter', () => {
-  let adapter: JsonAdapter;
+describe('JavaScriptAdapter', () => {
+  let adapter: JavaScriptAdapter;
 
   beforeEach(() => {
-    adapter = new JsonAdapter();
+    adapter = new JavaScriptAdapter();
   });
 
   afterEach(() => {
     jest.clearAllMocks();
   });
 
-  it('should parse JSON to tree structure', async () => {
-    const result = await adapter.parse(expectedJson);
+  it('should parse JavaScript to tree structure', async () => {
+    const result = await adapter.parse(expectedJavaScript);
     const expected = removeTreeNodeArrayElementNames(structuredClone(exampleTree));
     expect(result).toEqual(expected);
   });
 
-  it('should stringify tree structure to JSON', async () => {
+  it('should stringify tree structure to JavaScript', async () => {
     const result = await adapter.stringify(exampleTree);
-    expect(result).toBe(expectedJson);
+    expect(result).toBe(expectedJavaScript);
   });
 });

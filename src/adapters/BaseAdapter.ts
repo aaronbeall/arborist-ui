@@ -1,4 +1,4 @@
-import { DataAdapter, DataFormat, TreeNode, NodeType } from '../types';
+import { DataAdapter, DataFormat, TreeNode, NodeType, NodeValue } from '../types';
 import { generateId } from '../utils/idGenerator';
 
 export abstract class BaseAdapter implements DataAdapter {
@@ -6,7 +6,7 @@ export abstract class BaseAdapter implements DataAdapter {
   abstract parse(source: string): Promise<TreeNode>;
   abstract stringify(tree: TreeNode): Promise<string>;
 
-  protected createNode(name: string, type: NodeType, value?: string | number | boolean, children?: TreeNode[], attributes?: Record<string, string>): TreeNode {
+  protected createNode(name: string, type: NodeType, value?: NodeValue, children?: TreeNode[], attributes?: Record<string, string>): TreeNode {
     return {
       id: generateId(),
       name,

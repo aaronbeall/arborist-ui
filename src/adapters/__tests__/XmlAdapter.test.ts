@@ -6,7 +6,7 @@ jest.mock('../../utils/idGenerator', () => ({
 
 import { XmlAdapter } from '../XmlAdapter';
 import { exampleTree, expectedXml } from '../../test/testData';
-import { setTreeNodeArrayElementNames, stringifyAllTreeNodeValues } from '../../utils/treeNodeUtils';
+import { removeTreeNodeArrayElementNames, stringifyAllTreeNodeValues } from '../../utils/treeNodeUtils';
 
 describe('XmlAdapter', () => {
   let adapter: XmlAdapter;
@@ -22,7 +22,7 @@ describe('XmlAdapter', () => {
   });
 
   it('should stringify tree structure to XML', async () => {
-    const tree = setTreeNodeArrayElementNames(structuredClone(exampleTree), "", "tags");
+    const tree = removeTreeNodeArrayElementNames(structuredClone(exampleTree), "tags");
     const result = await adapter.stringify(tree);
     expect(result).toBe(expectedXml);
   });
