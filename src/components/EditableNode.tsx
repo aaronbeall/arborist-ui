@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Box, Typography, TextField, IconButton } from '@mui/material';
 import { Edit as EditIcon, Check as CheckIcon, Close as CloseIcon } from '@mui/icons-material';
 import { TreeNode } from '../types';
@@ -10,34 +10,42 @@ interface EditableNodeProps {
 
 export function EditableNode({ node, onEdit }: EditableNodeProps) {
   const [isEditing, setIsEditing] = useState(false);
-  const [editValue, setEditValue] = useState(node.value || '');
+  const [editValue, setEditValue] = useState(String(node.value || ''));
   const [showEditButton, setShowEditButton] = useState(false);
 
   const handleSave = () => {
-    onEdit({ ...node, value: editValue });
+    let newValue: string | number | boolean = editValue;
+
+    // Try to preserve the original type
+    if (typeof node.value === 'number') {
+      const num = Number(editValue);
+      // Only use number if it can be converted without data loss
+      if (!isNaN(num) && String(num) === editValue) {
+        newValue = num;
+      }
+    } else if (typeof node.value === 'boolean') {
+      const lower = editValue.toLowerCase();
+      if (lower === 'true') newValue = true;
+      else if (lower === 'false') newValue = false;
+    }
+
+    onEdit({ ...node, value: newValue });
     setIsEditing(false);
   };
 
   const handleRevert = () => {
-    setEditValue(node.value || '');
+    setEditValue(String(node.value || ''));
     setIsEditing(false);
   };
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') {
-        handleRevert();
-      }
-    };
-
-    if (isEditing) {
-      document.addEventListener('keydown', handleKeyDown);
+  const handleKeyDown = (e: React.KeyboardEvent) => {
+    if (e.key === 'Escape') {
+      handleRevert();
+    } else if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      handleSave();
     }
-
-    return () => {
-      document.removeEventListener('keydown', handleKeyDown);
-    };
-  }, [isEditing]);
+  };
 
   return (
     <Box 
@@ -64,6 +72,7 @@ export function EditableNode({ node, onEdit }: EditableNodeProps) {
                 size="small"
                 value={editValue}
                 onChange={(e) => setEditValue(e.target.value)}
+                onKeyDown={handleKeyDown}
                 sx={{ minWidth: 100 }}
                 autoFocus
               />
