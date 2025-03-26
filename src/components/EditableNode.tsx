@@ -77,7 +77,7 @@ export function EditableNode({ node, onEdit }: EditableNodeProps) {
           ) : (
             <>
               <Typography variant="body2" color="text.secondary">
-                : {node.value}
+                : {String(node.value)}
               </Typography>
               <IconButton 
                 size="small" 
@@ -96,4 +96,4 @@ export function EditableNode({ node, onEdit }: EditableNodeProps) {
       )}
     </Box>
   );
-} 
+}
