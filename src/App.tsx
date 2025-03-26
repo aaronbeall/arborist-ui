@@ -1,12 +1,13 @@
 import { useState, useCallback, useEffect, useMemo } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { CssBaseline, Box, Tab, Tabs, Typography, TextField, Select, MenuItem, Alert, IconButton, useMediaQuery } from '@mui/material';
+import { CssBaseline, Box, Tab, Tabs, Typography, TextField, Select, MenuItem, Alert, IconButton, useMediaQuery, Paper } from '@mui/material';
 import { Brightness4, Brightness7 } from '@mui/icons-material';
 import { DataFormat, TreeNode } from './types';
 import { formats, detectFormat } from './config/formats';
 import { exampleTree } from './test/testData';
 import { SourceTextView } from './components/SourceTextView';
 import { TreeView } from './components/TreeView';
+import logo from './assets/logo.svg'; // Import the logo
 
 type TabName = 'sourceText' | 'treeView';
 
@@ -166,32 +167,51 @@ function App() {
       <CssBaseline />
       <Box 
         sx={{ 
-          p: 3, 
-          height: '100vh', 
-          display: 'flex', 
+          height: '100vh',
+          display: 'flex',
           flexDirection: 'column',
           bgcolor: 'background.default',
-          minHeight: '100vh',
-          overflow: 'scroll',
+          overflow: 'hidden',
         }}
       >
-        <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', mb: 2 }}>
-          <Typography variant="h4" component="h1">
-            Data Tree Editor
-          </Typography>
-          <IconButton onClick={() => setDarkMode(!darkMode)} color="inherit">
-            {darkMode ? <Brightness7 /> : <Brightness4 />}
-          </IconButton>
-        </Box>
-        
-        <Box sx={{ borderBottom: 1, borderColor: 'divider', mb: 2 }}>
+        <Paper 
+          elevation={3}
+          sx={{
+            position: 'sticky',
+            top: 0,
+            zIndex: 1,
+            bgcolor: 'background.paper',
+            borderRadius: 0,
+          }}
+        >
+          <Box sx={{ p: 2 }}>
+            <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+              <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <img src={logo} alt="Logo" style={{ height: 40, marginRight: 16 }} />
+                <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 2 }}>
+                  <Typography variant="h4" component="h1" color="primary.main">
+                    Arborist UI
+                  </Typography>
+                  <Typography variant="subtitle1" component="h2" color="secondary">
+                    Data Tree Editor
+                  </Typography>
+                </Box>
+              </Box>
+              <IconButton onClick={() => setDarkMode(!darkMode)} color="inherit">
+                {darkMode ? <Brightness7 /> : <Brightness4 />}
+              </IconButton>
+            </Box>
+          </Box>
+        </Paper>
+
+        <Box sx={{ borderBottom: 1, borderColor: 'divider', px: 3 }}>
           <Tabs value={selectedTab} onChange={handleTabChange}>
             <Tab label="Source" value="sourceText" />
             <Tab label="Tree" value="treeView" />
           </Tabs>
         </Box>
 
-        <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+        <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', p: 3, overflow: 'auto' }}>
           {error && (
             <Alert severity="error" sx={{ mb: 2 }}>
               {error}
