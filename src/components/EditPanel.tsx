@@ -24,7 +24,7 @@ export function EditPanel({ node, onClose, onNodeSelect, parentNodes = [] }: Edi
   const rows = node.children?.map((child, index) => ({ 
     key: node.type === 'array' ? `${ child.name }[${ index }]` : child.name,
     node: child
-  })) || [];
+  })) ?? [];
 
   const getNodeIcon = (node: TreeNode) => {
     if (node.type === 'array') return <ListIcon color="action" />;
@@ -43,7 +43,7 @@ export function EditPanel({ node, onClose, onNodeSelect, parentNodes = [] }: Edi
           onClick={() => onNodeSelect?.(node)}
           sx={{ justifyContent: 'flex-start' }}
         >
-          {node.type === 'array' ? `Array(${node.children?.length || 0})` : 'Object'}
+          {node.type === 'array' ? `Array(${node.children?.length ?? 0})` : 'Object'}
         </Button>
       );
     }

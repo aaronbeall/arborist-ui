@@ -77,6 +77,8 @@ export class XmlAdapter extends BaseAdapter {
             value.forEach(item => {
               children.push(this.processNode(key, item));
             });
+          } else {
+            children.push(this.processNode(key, value ?? ""));
           }
         });
         return this.createNode(name, 'array', undefined, children);
@@ -187,7 +189,7 @@ export class XmlAdapter extends BaseAdapter {
         const childNode = this.convertFromTree({...child, name});
         groupedNodes.push(childNode[name]);
         return groups;
-      }, {} as XmlNode) || {};
+      }, {} as XmlNode) ?? {};
 
       return { [node.name]: groupedChildren };
     }
@@ -195,7 +197,7 @@ export class XmlAdapter extends BaseAdapter {
     // Object type - reduce children into a single object
     const result = node.children?.reduce((acc, child) => {
       return { ...acc, ...this.convertFromTree(child) };
-    }, {}) || {};
+    }, {}) ?? {};
 
     return node.name ? { [node.name]: result } : result;
   }

@@ -35,7 +35,7 @@ export class JsonAdapter extends BaseAdapter {
 
   private convertFromTree(node: TreeNode): unknown {
     if (node.type === 'array') {
-      return node.children?.map(child => this.convertFromTree(child)) || [];
+      return node.children?.map(child => this.convertFromTree(child)) ?? [];
     } else if (node.type === 'object') {
       const result: Record<string, unknown> = {};
       node.children?.forEach(child => {
