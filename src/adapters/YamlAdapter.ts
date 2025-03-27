@@ -19,6 +19,11 @@ export class YamlAdapter extends BaseAdapter {
     return stringify(data);
   }
 
+  minify(source: string): string {
+    const data = parse(source);
+    return stringify(data, { lineWidth: -1 });
+  }
+
   private convertToTree(data: YamlValue, name: string = 'root'): TreeNode {
     if (Array.isArray(data)) {
       return this.createNode(name, 'array', undefined, data.map(item => 
@@ -54,4 +59,4 @@ export class YamlAdapter extends BaseAdapter {
       return node.value || null;
     }
   }
-} 
+}

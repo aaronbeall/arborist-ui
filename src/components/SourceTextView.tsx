@@ -1,5 +1,5 @@
 import { Box, Select, MenuItem, FormControl, InputLabel, IconButton, Tooltip, useTheme } from '@mui/material';
-import { FormatAlignLeft, Clear } from '@mui/icons-material';
+import { FormatAlignLeft, Clear, Compress } from '@mui/icons-material';
 import { DataFormat } from '../types';
 import { formats } from '../config/formats';
 import Editor from "@monaco-editor/react";
@@ -10,9 +10,10 @@ interface SourceTextViewProps {
   onSourceChange: (source: string) => void;
   onFormatChange: (format: DataFormat) => void;
   onFormat: () => void;
+  onMinify: () => void;
 }
 
-export function SourceTextView({ source, format, onSourceChange, onFormatChange, onFormat }: SourceTextViewProps) {
+export function SourceTextView({ source, format, onSourceChange, onFormatChange, onFormat, onMinify }: SourceTextViewProps) {
   const theme = useTheme();
 
   const handleClear = () => {
@@ -37,6 +38,11 @@ export function SourceTextView({ source, format, onSourceChange, onFormatChange,
         <Tooltip title="Reformat">
           <IconButton onClick={onFormat} size="small">
             <FormatAlignLeft />
+          </IconButton>
+        </Tooltip>
+        <Tooltip title="Minify">
+          <IconButton onClick={onMinify} size="small">
+            <Compress />
           </IconButton>
         </Tooltip>
         <Tooltip title="Clear">

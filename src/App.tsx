@@ -117,6 +117,18 @@ function App() {
     }
   }, [source, format]);
 
+  const handleMinify = useCallback(async () => {
+    try {
+      setError(null);
+      const adapter = formats[format].adapter;
+      const minified = await adapter.minify(source);
+      setSource(minified);
+    } catch (error) {
+      console.error('Minification failed:', error);
+      setError(error instanceof Error ? error.message : 'Failed to minify');
+    }
+  }, [format, source]);
+
   const handleTabChange = useCallback(async (_: React.SyntheticEvent, newValue: TabName) => {
     if ((newValue === 'treeView' || newValue === 'graph') && source !== lastParsedSource) {
       await updateTree(source, format);
@@ -251,6 +263,7 @@ function App() {
               onSourceChange={handleSourceChange}
               onFormatChange={handleFormatChange}
               onFormat={handleFormat}
+              onMinify={handleMinify}
             />
           )}
 

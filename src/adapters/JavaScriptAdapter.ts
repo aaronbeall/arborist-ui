@@ -1,5 +1,6 @@
 import { DataFormat, NodeValue, TreeNode } from '../types';
 import { BaseAdapter } from './BaseAdapter';
+import { minify } from 'terser';
 
 type ParsedJsonValue = string | number | boolean | null | { [key: string]: ParsedJsonValue } | ParsedJsonValue[];
 
@@ -33,6 +34,14 @@ export class JavaScriptAdapter extends BaseAdapter {
   async stringify(tree: TreeNode): Promise<string> {
     const obj = this.fromTreeNode(tree);
     return this.stringifyValue(obj);
+  }
+
+  async minify(source: string): Promise<string> {
+    const result = await minify(source, {
+      mangle: true,
+      compress: true
+    });
+    return result.code || source;
   }
 
   private toTreeNode(value: ParsedJsonValue, name: string = 'root'): TreeNode {

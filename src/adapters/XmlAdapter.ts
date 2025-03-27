@@ -38,6 +38,14 @@ export class XmlAdapter extends BaseAdapter {
     return builder.buildObject(data);
   }
 
+  minify(source: string): string {
+    return source
+      .replace(/>\s+</g, '><') // Remove whitespace between tags
+      .replace(/<!--[\s\S]*?-->/g, '') // Remove comments
+      .replace(/\s+/g, ' ') // Collapse multiple spaces
+      .trim();
+  }
+
   private convertToTree(data: XmlResult): TreeNode {
     const rootKey = Object.keys(data)[0];
     const rootNode = data[rootKey];

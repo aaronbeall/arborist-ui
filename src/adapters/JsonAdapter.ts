@@ -14,6 +14,11 @@ export class JsonAdapter extends BaseAdapter {
     return JSON.stringify(data, null, 2);
   }
 
+  minify(source: string): string {
+    const obj = JSON.parse(source);
+    return JSON.stringify(obj);
+  }
+
   private convertToTree(data: unknown, name: string = 'root'): TreeNode {
     if (Array.isArray(data)) {
       return this.createNode(name, 'array', undefined, data.map(item => 
@@ -42,4 +47,4 @@ export class JsonAdapter extends BaseAdapter {
     }
     return null;
   }
-} 
+}

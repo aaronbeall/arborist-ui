@@ -34,6 +34,7 @@
     "react-syntax-highlighter": "^15.6.1",
     "reactflow": "^11.11.4",
     "tailwind-merge": "^3.0.2",
+    "terser": "^5.39.0",
     "xml2js": "^0.6.2",
     "yaml": "^2.7.0"
   },

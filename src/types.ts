@@ -17,10 +17,11 @@ export interface DataAdapter {
   parse: (source: string) => Promise<TreeNode>;
   stringify: (tree: TreeNode) => Promise<string>;
   format: DataFormat;
+  minify(source: string): string;
 }
 
 export interface HistoryState {
   source: string;
   tree: TreeNode;
   format: DataFormat;
-} 
+}
