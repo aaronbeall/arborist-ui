@@ -18,7 +18,7 @@ const typeIcons = {
   value: Code,
 };
 
-export function TreeNode({ data }: { data: NodeData }) {
+export function GraphNode({ data }: { data: NodeData }) {
   const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
   const [hovering, setHovering] = useState(false);
   const showPopper = Boolean(anchorEl) && hovering;

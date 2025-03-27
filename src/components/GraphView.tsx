@@ -13,7 +13,7 @@ import 'reactflow/dist/style.css';
 import { TreeNode } from '../types';
 import { treeToFlow } from '../utils/treeToFlow';
 import { useCallback } from 'react';
-import { TreeNode as CustomTreeNode } from './CustomNodes';
+import { GraphNode as CustomTreeNode } from './GraphNode';
 
 interface GraphViewProps {
   tree: TreeNode | null;
