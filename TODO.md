@@ -11,6 +11,8 @@
 - [ ] Format: .env
 - [ ] Format: GraphQL
 - [ ] Format: Markdown
+- [ ] Format: Math/Parens/Brackets
+- [ ] Handle attributes in XML
 - [ ] Schemas
 - [ ] Sharing/data collection/doc management -- user accounts?
 - [ ] Export/Import file
@@ -20,3 +22,4 @@
 - [ ] Credits/donation/SSO
 - [x] Graph view
 - [ ] Editing on graph vuew
+- [ ] AI Dummy data generator

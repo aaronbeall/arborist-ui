@@ -8,6 +8,7 @@ import ListIcon from '@mui/icons-material/List';
 import TextFieldsIcon from '@mui/icons-material/TextFields';
 import NumbersIcon from '@mui/icons-material/Numbers';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
+import EditIcon from '@mui/icons-material/Edit';
 import { NodeValue, TreeNode } from '../types';
 import { EditableNode } from './EditableNode';
 import { TypeSelector } from './TypeSelector';
@@ -21,10 +22,13 @@ interface TreeProps {
   onExpandedNodesChange: (nodes: Set<string>) => void;
   matchedNodes?: Set<string>;
   visibleNodes?: Set<string>;
+  onEditNode?: (node: TreeNode) => void;
+  editingNodeId?: string;
 }
 
-export function Tree({ node, level = 0, onNodeUpdate, expandedNodes, onExpandedNodesChange, arrayIndex, matchedNodes, visibleNodes }: TreeProps) {
+export function Tree({ node, level = 0, onNodeUpdate, expandedNodes, onExpandedNodesChange, arrayIndex, matchedNodes, visibleNodes, onEditNode, editingNodeId }: TreeProps) {
   const [typeMenuAnchor, setTypeMenuAnchor] = React.useState<null | HTMLElement>(null);
+  const [isHovered, setIsHovered] = React.useState(false);
   const hasChildren = node.children && node.children.length > 0;
 
   const handleToggle = (nodeId: string) => {
@@ -97,13 +101,23 @@ export function Tree({ node, level = 0, onNodeUpdate, expandedNodes, onExpandedN
 
   return (
     <Box sx={{ ml: level ? 2 : 0 }}>
-      <Box sx={{ 
-        display: 'flex', 
-        alignItems: 'center', 
-        gap: 1,
-        bgcolor: matchedNodes?.has(node.id) ? 'action.selected' : 'transparent',
-        borderRadius: 1,
-      }}>
+      <Box 
+        sx={{ 
+          display: 'flex', 
+          alignItems: 'center', 
+          gap: 1,
+          bgcolor: editingNodeId === node.id ? 'primary.main' : 
+                   matchedNodes?.has(node.id) ? 'action.selected' : 
+                   'transparent',
+          color: editingNodeId === node.id ? 'primary.contrastText' : 'inherit',
+          borderRadius: 1,
+          '&:hover': {
+            bgcolor: editingNodeId === node.id ? 'primary.dark' : 'action.hover',
+          },
+        }}
+        onMouseEnter={() => setIsHovered(true)}
+        onMouseLeave={() => setIsHovered(false)}
+      >
         {hasChildren && (
           <IconButton
             size="small"
@@ -120,6 +134,11 @@ export function Tree({ node, level = 0, onNodeUpdate, expandedNodes, onExpandedN
         <EditableNode
           node={{ ...node, name: getNodeName() }}
           onEdit={onNodeUpdate}
+          showEditButton={isHovered && (node.type === 'object' || node.type === 'array')}
+          onEditButtonClick={(e) => {
+            e.stopPropagation();
+            onEditNode?.(node);
+          }}
         />
       </Box>
       <TypeSelector
@@ -140,6 +159,8 @@ export function Tree({ node, level = 0, onNodeUpdate, expandedNodes, onExpandedN
               onExpandedNodesChange={onExpandedNodesChange}
               matchedNodes={matchedNodes}
               visibleNodes={visibleNodes}
+              onEditNode={onEditNode}
+              editingNodeId={editingNodeId}
             />
           ))}
         </Collapse>

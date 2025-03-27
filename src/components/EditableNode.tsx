@@ -6,12 +6,14 @@ import { TreeNode } from '../types';
 interface EditableNodeProps {
   node: TreeNode;
   onEdit: (node: TreeNode) => void;
+  showEditButton?: boolean;
+  onEditButtonClick?: (e: React.MouseEvent) => void;
 }
 
-export function EditableNode({ node, onEdit }: EditableNodeProps) {
+export function EditableNode({ node, onEdit, showEditButton, onEditButtonClick }: EditableNodeProps) {
   const [isEditing, setIsEditing] = useState(false);
   const [editValue, setEditValue] = useState(String(node.value || ''));
-  const [showEditButton, setShowEditButton] = useState(false);
+  const [showEditButtonState, setShowEditButtonState] = useState(false);
 
   const handleSave = () => {
     let newValue: string | number | boolean = editValue;
@@ -53,17 +55,29 @@ export function EditableNode({ node, onEdit }: EditableNodeProps) {
         display: 'flex', 
         alignItems: 'center', 
         gap: 1, 
-        flex: 1,
         '&:hover .edit-button': {
           opacity: 1,
         },
       }}
-      onMouseEnter={() => setShowEditButton(true)}
-      onMouseLeave={() => setShowEditButton(false)}
+      onMouseEnter={() => setShowEditButtonState(true)}
+      onMouseLeave={() => setShowEditButtonState(false)}
     >
-      <Typography variant="body2" sx={{ fontWeight: node.children ? 'bold' : 'normal' }}>
+      <Box sx={{ 
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        whiteSpace: 'nowrap' 
+      }}>
         {node.name}
-      </Typography>
+      </Box>
+      {showEditButton && (
+        <IconButton
+          size="small"
+          onClick={onEditButtonClick}
+          sx={{ ml: 1, opacity: 0.7 }}
+        >
+          <EditIcon fontSize="small" />
+        </IconButton>
+      )}
       {node.value !== undefined && (
         <>
           {isEditing ? (
