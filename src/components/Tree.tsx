@@ -10,8 +10,8 @@ import NumbersIcon from '@mui/icons-material/Numbers';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import EditIcon from '@mui/icons-material/Edit';
 import { NodeValue, TreeNode } from '../types';
-import { EditableNode } from './EditableNode';
 import { TypeSelector } from './TypeSelector';
+import { EditableNode } from './EditableNode';
 
 interface TreeProps {
   node: TreeNode;
