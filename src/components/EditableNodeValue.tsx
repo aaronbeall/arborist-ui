@@ -27,14 +27,11 @@ export function EditableNodeValue({ node, onEdit }: EditableNodeValueProps) {
   };
 
   return (
-    <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.5, color: 'text.secondary' }}>
-      <Box component="span">:</Box>
-      <EditableText
-        value={String(node.value ?? '')}
-        onChange={handleChange}
-        variant="body2"
-        sx={{ display: 'inline-flex', color: 'inherit' }}
-      />
-    </Box>
+    <EditableText
+      value={String(node.value ?? '')}
+      onChange={handleChange}
+      variant="body2"
+      sx={{ display: 'inline-flex', color: 'inherit' }}
+    />
   );
 }

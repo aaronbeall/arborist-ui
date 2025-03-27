@@ -8,6 +8,7 @@ import NumbersIcon from '@mui/icons-material/Numbers';
 import CheckBoxIcon from '@mui/icons-material/CheckBox';
 import { NodeValue, TreeNode } from '../types';
 import { TypeSelector } from './TypeSelector';
+import Box from '@mui/material/Box';
 
 interface NodeTypeIconProps {
   node: TreeNode;

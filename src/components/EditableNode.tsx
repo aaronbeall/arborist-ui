@@ -40,7 +40,10 @@ export function EditableNode({ node, onEdit, showEditButton, onEditButtonClick }
         </IconButton>
       )}
       {node.value !== undefined && (
-        <EditableNodeValue node={node} onEdit={onEdit} />
+        <>
+          <Box component="span" sx={{ color: 'text.secondary' }}>:</Box>
+          <EditableNodeValue node={node} onEdit={onEdit} />
+        </>
       )}
     </Box>
   );

@@ -10,15 +10,17 @@ import { TreeNode } from '../types';
 import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import { ChevronRight } from '@mui/icons-material';
 import { useEffect, useRef } from 'react';
+import { EditableNodeValue } from './EditableNodeValue';
 
 interface EditPanelProps {
   node: TreeNode;
   onClose: () => void;
-  onNodeSelect?: (node: TreeNode) => void;
+  onNodeSelect: (node: TreeNode) => void;
   parentNodes?: TreeNode[];
+  onNodeUpdate: (node: TreeNode) => void;
 }
 
-export function EditPanel({ node, onClose, onNodeSelect, parentNodes = [] }: EditPanelProps) {
+export function EditPanel({ node, onClose, onNodeSelect, parentNodes = [], onNodeUpdate }: EditPanelProps) {
   const pathPaperRef = useRef<HTMLDivElement>(null);
 
   const rows = node.children?.map((child, index) => ({ 
@@ -47,7 +49,7 @@ export function EditPanel({ node, onClose, onNodeSelect, parentNodes = [] }: Edi
         </Button>
       );
     }
-    return String(node.value);
+    return <EditableNodeValue node={node} onEdit={onNodeUpdate} />;
   };
 
   useEffect(() => {

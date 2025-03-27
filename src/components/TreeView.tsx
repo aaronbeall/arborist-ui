@@ -280,6 +280,7 @@ export function TreeView({ tree, source, onNodeUpdate }: TreeViewProps) {
           onClose={handleCloseEditPanel}
           onNodeSelect={handleNodeSelect}
           parentNodes={nodeParentPath}
+          onNodeUpdate={onNodeUpdate}
         />
       )}
     </Box>
