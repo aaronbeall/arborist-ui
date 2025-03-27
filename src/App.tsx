@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect, useMemo } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { CssBaseline, Box, Tab, Tabs, Typography, Alert, IconButton, useMediaQuery, Paper } from '@mui/material';
+import { CssBaseline, Box, Tab, Tabs, Typography, Alert, IconButton, useMediaQuery, Paper, Divider } from '@mui/material';
 import { Brightness4, Brightness7 } from '@mui/icons-material';
 import { DataFormat, TreeNode } from './types';
 import { formats, validateFormat } from './config/formats';
@@ -187,7 +187,7 @@ function App() {
           display: 'flex',
           flexDirection: 'column',
           bgcolor: 'background.default',
-          overflow: 'hidden',
+          overflow: 'hidden'
         }}
       >
         <Paper 
@@ -204,12 +204,13 @@ function App() {
             <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
               <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <img src={logo} alt="Logo" style={{ height: 40, marginRight: 16 }} />
-                <Box sx={{ display: 'flex', alignItems: 'baseline', gap: 2 }}>
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 2 }}>
                   <Typography variant="h4" component="h1" color="primary.main">
-                    Arborist UI
+                    arborist <b>ui</b>
                   </Typography>
+                  <Divider orientation="vertical" flexItem />
                   <Typography variant="subtitle1" component="h2" color="secondary">
-                    Tree Data View & Editor
+                    Tree Data Editor, Formatter & Convertor
                   </Typography>
                 </Box>
               </Box>

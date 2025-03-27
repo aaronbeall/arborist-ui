@@ -2,9 +2,20 @@
 
 - [ ] Value data format (number, boolean, string)
 - [ ] Search/filter
+- [ ] Find and replace
+- [ ] Rename/add/delete on tree view
+- [ ] Drag-and-drop on tree view
 - [ ] Format: Indented Plain Text
 - [ ] Format: CSV
 - [ ] Format: .properties
 - [ ] Format: .env
 - [ ] Format: GraphQL
+- [ ] Format: Markdown
 - [ ] Schemas
+- [ ] Sharing/data collection
+- [ ] Export/Import file
+- [ ] Syntax highlighting
+- [ ] Link to source from tree
+- [ ] Minify
+- [ ] Credits/donation/SSO
+- [ ] Graph view

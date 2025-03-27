@@ -19,9 +19,11 @@ interface TreeProps {
   arrayIndex?: number;
   expandedNodes: Set<string>;
   onExpandedNodesChange: (nodes: Set<string>) => void;
+  matchedNodes?: Set<string>;
+  visibleNodes?: Set<string>;
 }
 
-export function Tree({ node, level = 0, onNodeUpdate, expandedNodes, onExpandedNodesChange, arrayIndex }: TreeProps) {
+export function Tree({ node, level = 0, onNodeUpdate, expandedNodes, onExpandedNodesChange, arrayIndex, matchedNodes, visibleNodes }: TreeProps) {
   const [typeMenuAnchor, setTypeMenuAnchor] = React.useState<null | HTMLElement>(null);
   const hasChildren = node.children && node.children.length > 0;
 
@@ -88,9 +90,20 @@ export function Tree({ node, level = 0, onNodeUpdate, expandedNodes, onExpandedN
     return node.name;
   };
 
+  // Hide nodes that aren't in the visible set when filtering
+  if (visibleNodes && !visibleNodes.has(node.id)) {
+    return null;
+  }
+
   return (
     <Box sx={{ ml: level ? 2 : 0 }}>
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+      <Box sx={{ 
+        display: 'flex', 
+        alignItems: 'center', 
+        gap: 1,
+        bgcolor: matchedNodes?.has(node.id) ? 'action.selected' : 'transparent',
+        borderRadius: 1,
+      }}>
         {hasChildren && (
           <IconButton
             size="small"
@@ -125,6 +138,8 @@ export function Tree({ node, level = 0, onNodeUpdate, expandedNodes, onExpandedN
               arrayIndex={node.type === 'array' ? index : undefined}
               expandedNodes={expandedNodes}
               onExpandedNodesChange={onExpandedNodesChange}
+              matchedNodes={matchedNodes}
+              visibleNodes={visibleNodes}
             />
           ))}
         </Collapse>
