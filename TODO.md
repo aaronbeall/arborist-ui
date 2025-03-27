@@ -14,7 +14,7 @@
 - [ ] Schemas
 - [ ] Sharing/data collection/doc management -- user accounts?
 - [ ] Export/Import file
-- [ ] Syntax highlighting
+- [x] Syntax highlighting
 - [ ] Link to source from tree
 - [ ] Minify
 - [ ] Credits/donation/SSO

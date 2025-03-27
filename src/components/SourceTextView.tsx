@@ -1,7 +1,8 @@
-import { Box, TextField, Select, MenuItem, FormControl, InputLabel, IconButton, Tooltip } from '@mui/material';
+import { Box, Select, MenuItem, FormControl, InputLabel, IconButton, Tooltip, useTheme } from '@mui/material';
 import { FormatAlignLeft, Clear } from '@mui/icons-material';
 import { DataFormat } from '../types';
 import { formats } from '../config/formats';
+import Editor from "@monaco-editor/react";
 
 interface SourceTextViewProps {
   source: string;
@@ -12,6 +13,8 @@ interface SourceTextViewProps {
 }
 
 export function SourceTextView({ source, format, onSourceChange, onFormatChange, onFormat }: SourceTextViewProps) {
+  const theme = useTheme();
+
   const handleClear = () => {
     onSourceChange('');
   };
@@ -43,22 +46,24 @@ export function SourceTextView({ source, format, onSourceChange, onFormatChange,
         </Tooltip>
       </Box>
       
-      <TextField
-        multiline
-        fullWidth
-        value={source}
-        onChange={(e) => onSourceChange(e.target.value)}
-        sx={{
-          flex: 1,
-          '& .MuiInputBase-root': {
-            height: '100%',
-          },
-          '& .MuiInputBase-input': {
-            height: '100% !important',
-            overflow: 'auto !important',
-          },
-        }}
-      />
+      <Box sx={{ flex: 1, border: '1px solid rgba(0, 0, 0, 0.23)', borderRadius: 1, overflow: 'hidden' }}>
+        <Editor
+          value={source}
+          onChange={(value) => onSourceChange(value ?? '')}
+          language={format.toLowerCase()}
+          theme={theme.palette.mode === 'dark' ? 'vs-dark' : 'light'}
+          options={{
+            minimap: { enabled: false },
+            scrollBeyondLastLine: false,
+            fontSize: 14,
+            lineNumbers: 'off',
+            folding: false,
+            lineDecorationsWidth: 0,
+            lineNumbersMinChars: 0,
+            wordWrap: 'on'
+          }}
+        />
+      </Box>
     </Box>
   );
 }
