@@ -12,8 +12,6 @@ interface EditableNodeProps {
 }
 
 export function EditableNode({ node, onEdit, showEditButton, onEditButtonClick }: EditableNodeProps) {
-  const [showEditButtonState, setShowEditButtonState] = useState(false);
-
   return (
     <Box 
       sx={{ 
@@ -24,8 +22,6 @@ export function EditableNode({ node, onEdit, showEditButton, onEditButtonClick }
           opacity: 1,
         },
       }}
-      onMouseEnter={() => setShowEditButtonState(true)}
-      onMouseLeave={() => setShowEditButtonState(false)}
     >
       <Box sx={{ 
         overflow: 'hidden',

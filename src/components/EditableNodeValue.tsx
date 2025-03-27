@@ -18,7 +18,7 @@ export function EditableNodeValue({ node, onEdit }: EditableNodeValueProps) {
         newValue = num;
       }
     } else if (typeof node.value === 'boolean') {
-      const lower = editValue.toLowerCase();
+      const lower = editValue.toLowerCase().trim();
       if (lower === 'true') newValue = true;
       else if (lower === 'false') newValue = false;
     }
