@@ -1,7 +1,7 @@
 # TODO
 
-- [ ] Value data format (number, boolean, string)
-- [ ] Search/filter
+- [x] Value data format handling (number, boolean, string)
+- [x] Search/filter
 - [ ] Find and replace
 - [ ] Rename/add/delete on tree view
 - [ ] Drag-and-drop on tree view
@@ -12,7 +12,7 @@
 - [ ] Format: GraphQL
 - [ ] Format: Markdown
 - [ ] Schemas
-- [ ] Sharing/data collection
+- [ ] Sharing/data collection/doc management -- user accounts?
 - [ ] Export/Import file
 - [ ] Syntax highlighting
 - [ ] Link to source from tree

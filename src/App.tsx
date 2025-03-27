@@ -7,9 +7,10 @@ import { formats, validateFormat } from './config/formats';
 import { exampleTree } from './test/testData';
 import { SourceTextView } from './components/SourceTextView';
 import { TreeView } from './components/TreeView';
+import { GraphView } from './components/GraphView';
 import logo from './assets/logo.svg';
 
-type TabName = 'sourceText' | 'treeView';
+type TabName = 'sourceText' | 'treeView' | 'graph';
 
 function App() {
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)');
@@ -117,7 +118,7 @@ function App() {
   }, [source, format]);
 
   const handleTabChange = useCallback(async (_: React.SyntheticEvent, newValue: TabName) => {
-    if (newValue === 'treeView' && source !== lastParsedSource) {
+    if ((newValue === 'treeView' || newValue === 'graph') && source !== lastParsedSource) {
       await updateTree(source, format);
     }
     setSelectedTab(newValue);
@@ -225,10 +226,18 @@ function App() {
           <Tabs value={selectedTab} onChange={handleTabChange}>
             <Tab label="Source" value="sourceText" />
             <Tab label="Tree" value="treeView" />
+            <Tab label="Graph" value="graph" />
           </Tabs>
         </Box>
 
-        <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column', p: 3, overflow: 'auto' }}>
+        <Box sx={{ 
+          flex: 1, 
+          display: 'flex', 
+          flexDirection: 'column', 
+          p: 3, 
+          overflow: 'auto',
+          height: selectedTab === 'graph' ? 'calc(100vh - 180px)' : 'auto'
+        }}>
           {error && (
             <Alert severity="error" sx={{ mb: 2 }}>
               {error}
@@ -251,6 +260,10 @@ function App() {
               source={source}
               onNodeUpdate={handleNodeEdit}
             />
+          )}
+
+          {selectedTab === 'graph' && (
+            <GraphView tree={tree} />
           )}
         </Box>
       </Box>
