@@ -2,12 +2,12 @@ import { Handle, Position } from 'reactflow';
 import { Box, Typography, Table, TableBody, TableRow, TableCell, Popper, Paper } from '@mui/material';
 import { TextSnippet, DataObject, ViewList, Code } from '@mui/icons-material';
 import { useState } from 'react';
-import { NodeType } from '../types';
+import { NodeType, NodeValue } from '../types';
 
 interface NodeData {
   label: string;
-  properties?: Record<string, any>;
-  elements?: Record<string, any>;
+  properties?: Record<string, NodeValue>;
+  elements?: Record<string, NodeValue>;
   type?: NodeType;
 }
 

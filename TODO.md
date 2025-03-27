@@ -6,7 +6,7 @@
 - [ ] Rename/add/delete on tree view
 - [ ] Drag-and-drop on tree view
 - [ ] Format: Indented Plain Text
-- [ ] Format: CSV
+- [ ] Format: CSV -- use a parent column for hierarchy
 - [ ] Format: .properties
 - [ ] Format: .env
 - [ ] Format: GraphQL
@@ -16,6 +16,7 @@
 - [ ] Export/Import file
 - [x] Syntax highlighting
 - [ ] Link to source from tree
-- [ ] Minify
+- [x] Minify
 - [ ] Credits/donation/SSO
-- [ ] Graph view
+- [x] Graph view
+- [ ] Editing on graph vuew

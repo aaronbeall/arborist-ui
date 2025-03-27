@@ -19,7 +19,7 @@ export class YamlAdapter extends BaseAdapter {
     return stringify(data);
   }
 
-  minify(source: string): string {
+  async minify(source: string): Promise<string> {
     const data = parse(source);
     return stringify(data, { lineWidth: -1 });
   }

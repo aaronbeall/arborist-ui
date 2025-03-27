@@ -1,6 +1,6 @@
 import { useState, useCallback, useEffect, useMemo } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { CssBaseline, Box, Tab, Tabs, Typography, Alert, IconButton, useMediaQuery, Paper, Divider } from '@mui/material';
+import { CssBaseline, Box, Tab, Tabs, Typography, Alert, IconButton, useMediaQuery, Paper, Divider, Chip } from '@mui/material';
 import { Brightness4, Brightness7 } from '@mui/icons-material';
 import { DataFormat, TreeNode } from './types';
 import { formats, validateFormat } from './config/formats';
@@ -238,7 +238,20 @@ function App() {
           <Tabs value={selectedTab} onChange={handleTabChange}>
             <Tab label="Source" value="sourceText" />
             <Tab label="Tree" value="treeView" />
-            <Tab label="Graph" value="graph" />
+            <Tab 
+              label={
+                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                  Graph
+                  <Chip
+                    label="Beta"
+                    size="small"
+                    color="primary"
+                    sx={{ height: 20 }}
+                  />
+                </Box>
+              }
+              value="graph"
+            />
           </Tabs>
         </Box>
 

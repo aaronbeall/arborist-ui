@@ -1,7 +1,5 @@
 import { Box } from '@mui/material';
 import ReactFlow, { 
-  Node, 
-  Edge,
   Controls,
   Background,
   Panel,

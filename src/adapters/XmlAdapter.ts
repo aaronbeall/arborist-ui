@@ -38,7 +38,7 @@ export class XmlAdapter extends BaseAdapter {
     return builder.buildObject(data);
   }
 
-  minify(source: string): string {
+  async minify(source: string): Promise<string> {
     return source
       .replace(/>\s+</g, '><') // Remove whitespace between tags
       .replace(/<!--[\s\S]*?-->/g, '') // Remove comments

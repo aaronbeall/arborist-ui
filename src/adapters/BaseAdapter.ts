@@ -5,14 +5,14 @@ export abstract class BaseAdapter implements DataAdapter {
   abstract format: DataFormat;
   abstract parse(source: string): Promise<TreeNode>;
   abstract stringify(tree: TreeNode): Promise<string>;
+  abstract minify(source: string): Promise<string>;
 
-  protected createNode(name: string, type: NodeType, value?: NodeValue, children?: TreeNode[], attributes?: Record<string, string>): TreeNode {
+  protected createNode(name: string, type: NodeType, value?: NodeValue, children?: TreeNode[]): TreeNode {
     return {
       id: generateId(),
       name,
       value,
       children,
-      attributes,
       type
     };
   }

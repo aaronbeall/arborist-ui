@@ -9,7 +9,6 @@ export interface TreeNode {
   name: string;
   value?: NodeValue;
   children?: TreeNode[];
-  attributes?: Record<string, string>;
   type: NodeType;
 }
 
@@ -17,7 +16,7 @@ export interface DataAdapter {
   parse: (source: string) => Promise<TreeNode>;
   stringify: (tree: TreeNode) => Promise<string>;
   format: DataFormat;
-  minify(source: string): string;
+  minify(source: string): Promise<string>;
 }
 
 export interface HistoryState {

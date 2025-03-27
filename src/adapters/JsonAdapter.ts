@@ -14,7 +14,7 @@ export class JsonAdapter extends BaseAdapter {
     return JSON.stringify(data, null, 2);
   }
 
-  minify(source: string): string {
+  async minify(source: string): Promise<string> {
     const obj = JSON.parse(source);
     return JSON.stringify(obj);
   }
