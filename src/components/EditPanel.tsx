@@ -1,7 +1,6 @@
-import { Box, IconButton, Paper, Typography, Table, TableBody, TableCell, TableHead, TableRow, Button } from '@mui/material';
+import { Box, IconButton, Paper, Typography, Table, TableBody, TableCell, TableHead, TableRow, Button, Breadcrumbs } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 import { ChevronRight } from '@mui/icons-material';
-import { useEffect, useRef } from 'react';
 import { EditableNodeValue } from './EditableNodeValue';
 import { NodeTypeIcon } from './NodeTypeIcon';
 import { TreeNode } from '../types';
@@ -15,8 +14,6 @@ interface EditPanelProps {
 }
 
 export function EditPanel({ node, onClose, onNodeSelect, parentNodes = [], onNodeUpdate }: EditPanelProps) {
-  const pathPaperRef = useRef<HTMLDivElement>(null);
-
   const rows = node.children?.map((child, index) => ({ 
     key: node.type === 'array' ? `${ child.name }[${ index }]` : child.name,
     node: child
@@ -37,12 +34,6 @@ export function EditPanel({ node, onClose, onNodeSelect, parentNodes = [], onNod
     return <EditableNodeValue node={node} onEdit={onNodeUpdate} />;
   };
 
-  useEffect(() => {
-    if (pathPaperRef.current) {
-      pathPaperRef.current.scrollTop = pathPaperRef.current.scrollHeight;
-    }
-  }, [node]);
-
   return (
     <Paper 
       elevation={3}
@@ -58,46 +49,58 @@ export function EditPanel({ node, onClose, onNodeSelect, parentNodes = [], onNod
         display: 'flex',
         flexDirection: 'column'
       }}>
-        <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', px: 2, py: 1 }}>
-          <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            <NodeTypeIcon node={node} isExpanded onNodeUpdate={onNodeUpdate} />
-            <Typography variant="h6">{node.name}</Typography>
+        <Box sx={{ display: 'flex', alignItems: 'flex-start', justifyContent: 'space-between', px: 2, pt: 1, pb: 1 }}>
+          <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5, flex: 1, mr: 1 }}>
+            {parentNodes.length > 0 && (
+              <Breadcrumbs
+                sx={{
+                  '& .MuiBreadcrumbs-ol': { 
+                    flexWrap: 'wrap',
+                    gap: 0.25,
+                    lineHeight: 0.8
+                  },
+                  '& .MuiBreadcrumbs-li': { 
+                    minWidth: 0,
+                    color: 'text.disabled',
+                    cursor: 'pointer',
+                    '&:hover': { color: 'primary.main' },
+                    '& p': {
+                      fontSize: '0.8rem',
+                      lineHeight: '1em'
+                    }
+                  },
+                  '& .MuiBreadcrumbs-separator': {
+                    mx: 0.25,
+                    color: 'text.disabled'
+                  }
+                }}
+                separator={<ChevronRight sx={{ fontSize: '0.5rem' }} />}
+              >
+                {parentNodes.map((parent) => (
+                  <Typography
+                    key={parent.id}
+                    noWrap
+                    onClick={() => onNodeSelect?.(parent)}
+                    sx={{ 
+                      maxWidth: '100px',
+                      display: 'block',
+                      textOverflow: 'ellipsis'
+                    }}
+                  >
+                    {parent.name}
+                  </Typography>
+                ))}
+              </Breadcrumbs>
+            )}
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+              <NodeTypeIcon node={node} isExpanded onNodeUpdate={onNodeUpdate} />
+              <Typography variant="h6">{node.name}</Typography>
+            </Box>
           </Box>
           <IconButton size="small" onClick={onClose}>
             <CloseIcon />
           </IconButton>
         </Box>
-
-        {parentNodes.length > 0 && (
-          <Paper 
-            ref={pathPaperRef}
-            variant="outlined" 
-            sx={{ 
-              p: 1,
-              maxHeight: '4.5em',
-              overflow: 'auto',
-              fontSize: '0.75rem',
-              borderRadius: 0,
-              borderLeft: 0,
-              borderRight: 0
-            }}
-          >
-            {parentNodes.map((parent, i) => (
-              <Box key={parent.id} sx={{ 
-                display: 'flex', 
-                alignItems: 'center',
-                ml: i * 1.5,
-                color: 'text.secondary',
-                '&:hover': { color: 'primary.main' },
-                cursor: 'pointer',
-                typography: 'caption'
-              }} onClick={() => onNodeSelect?.(parent)}>
-                <ChevronRight sx={{ fontSize: '0.9em', mr: 0.5 }} />
-                {parent.name}
-              </Box>
-            ))}
-          </Paper>
-        )}
       </Box>
       <Box sx={{ overflow: 'auto', flex: 1 }}>
         <Table size="small">
@@ -105,18 +108,26 @@ export function EditPanel({ node, onClose, onNodeSelect, parentNodes = [], onNod
             <TableRow sx={{ 
               bgcolor: 'action.selected',
               '& th': { 
-                fontWeight: 'bold',
-                borderBottom: 2,
+                fontWeight: 500,
+                borderBottom: 1,
                 borderColor: 'divider',
-                py: 1.5,
-                typography: 'subtitle2'
+                py: 1,
+                typography: 'caption',
+                fontSize: '0.7rem',
+                color: 'text.secondary'
               } 
             }}>
               <TableCell>{node.type === 'array' ? 'Index' : 'Key'}</TableCell>
               <TableCell>Value</TableCell>
             </TableRow>
           </TableHead>
-          <TableBody>
+          <TableBody sx={{ 
+            '& td': { 
+              py: 0.5,
+              fontSize: '0.75rem',
+              color: 'text.secondary'
+            }
+          }}>
             {rows?.map(({ key, node }) => (
               <TableRow key={node.id}>
                 <TableCell>
