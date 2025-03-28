@@ -1,5 +1,5 @@
-import { TreeNode } from '../types';
-import { findNodeById, findParentPath, getFilteredNodes, collectAllIds } from './treeUtils';
+import { TreeNode } from '../../types';
+import { findNodeById, findParentPath, getFilteredNodes, collectAllIds } from '../treeUtils';
 
 const sampleTree: TreeNode = {
   id: 'root',
