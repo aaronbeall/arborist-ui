@@ -6,7 +6,7 @@ jest.mock('../../utils/idGenerator', () => ({
 
 import { JsonAdapter } from '../JsonAdapter';
 import { exampleTree, expectedJson } from '../../test/testData';
-import { removeTreeNodeArrayElementNames } from '../../utils/treeNodeUtils';
+import { removeTreeNodeArrayElementNames } from '../../utils/treeTestUtils';
 
 describe('JsonAdapter', () => {
   let adapter: JsonAdapter;

@@ -1,16 +1,10 @@
 import { Box, IconButton, Paper, Typography, Table, TableBody, TableCell, TableHead, TableRow, Button } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
-import FolderIcon from '@mui/icons-material/Folder';
-import FolderOpenIcon from '@mui/icons-material/FolderOpen';
-import ListIcon from '@mui/icons-material/List';
-import TextFieldsIcon from '@mui/icons-material/TextFields';
-import NumbersIcon from '@mui/icons-material/Numbers';
-import CheckBoxIcon from '@mui/icons-material/CheckBox';
-import { TreeNode } from '../types';
-import NavigateNextIcon from '@mui/icons-material/NavigateNext';
 import { ChevronRight } from '@mui/icons-material';
 import { useEffect, useRef } from 'react';
 import { EditableNodeValue } from './EditableNodeValue';
+import { NodeTypeIcon } from './NodeTypeIcon';
+import { TreeNode } from '../types';
 
 interface EditPanelProps {
   node: TreeNode;
@@ -28,20 +22,11 @@ export function EditPanel({ node, onClose, onNodeSelect, parentNodes = [], onNod
     node: child
   })) ?? [];
 
-  const getNodeIcon = (node: TreeNode) => {
-    if (node.type === 'array') return <ListIcon color="action" />;
-    if (node.type === 'object') return <FolderIcon color="action" />;
-    if (typeof node.value === 'number') return <NumbersIcon color="action" />;
-    if (typeof node.value === 'boolean') return <CheckBoxIcon color="action" />;
-    return <TextFieldsIcon color="action" />;
-  };
-
   const renderNodeValue = (node: TreeNode) => {
     if (node.type === 'array' || node.type === 'object') {
       return (
         <Button
           size="small"
-          startIcon={getNodeIcon(node)}
           onClick={() => onNodeSelect?.(node)}
           sx={{ justifyContent: 'flex-start' }}
         >
@@ -75,7 +60,7 @@ export function EditPanel({ node, onClose, onNodeSelect, parentNodes = [], onNod
       }}>
         <Box sx={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', px: 2, py: 1 }}>
           <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-            {node.type === 'array' ? <ListIcon color="primary" /> : <FolderIcon color="primary" />}
+            <NodeTypeIcon node={node} isExpanded onNodeUpdate={onNodeUpdate} />
             <Typography variant="h6">{node.name}</Typography>
           </Box>
           <IconButton size="small" onClick={onClose}>
@@ -136,7 +121,7 @@ export function EditPanel({ node, onClose, onNodeSelect, parentNodes = [], onNod
               <TableRow key={node.id}>
                 <TableCell>
                   <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                    {getNodeIcon(node)}
+                    <NodeTypeIcon node={node} onNodeUpdate={onNodeUpdate} />
                     {key}
                   </Box>
                 </TableCell>

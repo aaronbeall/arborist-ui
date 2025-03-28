@@ -9,6 +9,7 @@ import { Tree } from './Tree';
 import { useState, useMemo, useEffect } from 'react';
 import { StatsDisplay } from './StatsDisplay';
 import { EditPanel } from './EditPanel';
+import { findNodeById, findParentPath, getFilteredNodes, collectAllIds } from '../utils/treeUtils';
 
 function getDefaultExpandedNodes(node: TreeNode): Set<string> {
   const expanded = new Set<string>();
@@ -24,69 +25,6 @@ function getDefaultExpandedNodes(node: TreeNode): Set<string> {
   };
   visit(node);
   return expanded;
-}
-
-function findMatchingNodes(node: TreeNode, filter: string): Set<string> {
-  const matches = new Set<string>();
-  const filterLower = filter.toLowerCase();
-
-  const visit = (node: TreeNode) => {
-    const nameMatch = node.name.toLowerCase().includes(filterLower);
-    const valueMatch = node.value !== undefined && String(node.value).toLowerCase().includes(filterLower);
-    
-    if (nameMatch || valueMatch) {
-      matches.add(node.id);
-    }
-    node.children?.forEach(visit);
-  };
-
-  visit(node);
-  return matches;
-}
-
-function buildParentMap(node: TreeNode): Map<string, TreeNode> {
-  const parentMap = new Map<string, TreeNode>();
-  
-  const visit = (node: TreeNode, parent?: TreeNode) => {
-    if (parent) {
-      parentMap.set(node.id, parent);
-    }
-    node.children?.forEach(child => visit(child, node));
-  };
-  
-  visit(node);
-  return parentMap;
-}
-
-function collectAncestors(node: TreeNode, targetIds: Set<string>): Set<string> {
-  const ancestors = new Set<string>();
-  const parentMap = buildParentMap(node);
-
-  targetIds.forEach(id => {
-    let current = parentMap.get(id);
-    while (current) {
-      ancestors.add(current.id);
-      current = parentMap.get(current.id);
-    }
-  });
-
-  return ancestors;
-}
-
-function collectDescendants(node: TreeNode, targetIds: Set<string>): Set<string> {
-  const descendants = new Set<string>();
-
-  const visit = (node: TreeNode, isDescendant: boolean) => {
-    if (isDescendant || targetIds.has(node.id)) {
-      descendants.add(node.id);
-      node.children?.forEach(child => visit(child, true));
-    } else {
-      node.children?.forEach(child => visit(child, false));
-    }
-  };
-
-  visit(node, false);
-  return descendants;
 }
 
 interface NodeStats {
@@ -122,24 +60,17 @@ export function TreeView({ tree, source, onNodeUpdate }: TreeViewProps) {
     tree ? getDefaultExpandedNodes(tree) : new Set()
   );
   const [filter, setFilter] = useState('');
-  const [editNode, setEditNode] = useState<TreeNode | null>(null);
+  const [editNodeId, setEditNodeId] = useState<string | null>(null);
   const [nodeParentPath, setNodeParentPath] = useState<TreeNode[]>([]);
+
+  const editNode = useMemo(() => {
+    if (!tree || !editNodeId) return null;
+    return findNodeById(tree, editNodeId);
+  }, [tree, editNodeId]);
+
   const filteredNodes = useMemo(() => {
     if (!tree || !filter) return null;
-
-    const matches = findMatchingNodes(tree, filter);
-    const ancestors = collectAncestors(tree, matches);
-    const visible = new Set([
-      ...matches,
-      ...ancestors,
-      ...collectDescendants(tree, matches)
-    ]);
-
-    return {
-      matches,
-      visible,
-      expandedParents: ancestors
-    };
+    return getFilteredNodes(tree, filter);
   }, [tree, filter]);
 
   // Update expanded nodes when filter changes
@@ -151,13 +82,7 @@ export function TreeView({ tree, source, onNodeUpdate }: TreeViewProps) {
 
   const handleExpandAll = () => {
     if (!tree) return;
-    const allIds = new Set<string>();
-    const collectIds = (node: TreeNode) => {
-      allIds.add(node.id);
-      node.children?.forEach(collectIds);
-    };
-    collectIds(tree);
-    setExpandedNodes(allIds);
+    setExpandedNodes(collectAllIds(tree));
   };
 
   const handleCollapseAll = () => {
@@ -165,32 +90,14 @@ export function TreeView({ tree, source, onNodeUpdate }: TreeViewProps) {
   };
 
   const handleNodeSelect = (node: TreeNode) => {
-    // Build parent path when selecting a node
-    const path: TreeNode[] = [];
-    const findParentPath = (current: TreeNode, target: TreeNode): boolean => {
-      if (current.id === target.id) {
-        return true;
-      }
-      if (current.children) {
-        for (const child of current.children) {
-          if (findParentPath(child, target)) {
-            path.push(current);
-            return true;
-          }
-        }
-      }
-      return false;
-    };
-
     if (tree) {
-      findParentPath(tree, node);
-      setNodeParentPath(path.reverse());
+      setNodeParentPath(findParentPath(tree, node));
     }
-    setEditNode(node);
+    setEditNodeId(node.id);
   };
 
   const handleCloseEditPanel = () => {
-    setEditNode(null);
+    setEditNodeId(null);
     setNodeParentPath([]);
   };
 
@@ -272,7 +179,7 @@ export function TreeView({ tree, source, onNodeUpdate }: TreeViewProps) {
                 matchedNodes={filteredNodes?.matches}
                 visibleNodes={filteredNodes?.visible}
                 onEditNode={handleNodeSelect}
-                editingNodeId={editNode?.id}
+                editingNodeId={editNodeId}
               />
             ) : (
               <Typography color="text.secondary">

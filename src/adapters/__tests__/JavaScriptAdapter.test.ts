@@ -6,7 +6,7 @@ jest.mock('../../utils/idGenerator', () => ({
 
 import { JavaScriptAdapter } from '../JavaScriptAdapter';
 import { exampleTree, expectedJavaScript } from '../../test/testData';
-import { removeTreeNodeArrayElementNames } from '../../utils/treeNodeUtils';
+import { removeTreeNodeArrayElementNames } from '../../utils/treeTestUtils';
 
 describe('JavaScriptAdapter', () => {
   let adapter: JavaScriptAdapter;

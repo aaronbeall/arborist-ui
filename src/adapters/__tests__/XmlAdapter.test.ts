@@ -6,7 +6,7 @@ jest.mock('../../utils/idGenerator', () => ({
 
 import { XmlAdapter } from '../XmlAdapter';
 import { exampleTree, expectedXml } from '../../test/testData';
-import { removeTreeNodeArrayElementNames, stringifyAllTreeNodeValues } from '../../utils/treeNodeUtils';
+import { removeTreeNodeArrayElementNames, stringifyAllTreeNodeValues } from '../../utils/treeTestUtils';
 
 describe('XmlAdapter', () => {
   let adapter: XmlAdapter;

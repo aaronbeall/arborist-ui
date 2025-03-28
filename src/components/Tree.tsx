@@ -2,7 +2,7 @@ import React from 'react';
 import { Box, Collapse, IconButton } from '@mui/material';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { NodeValue, TreeNode } from '../types';
+import { TreeNode } from '../types';
 import { EditableNode } from './EditableNode';
 import { NodeTypeIcon } from './NodeTypeIcon';
 
@@ -16,7 +16,7 @@ interface TreeProps {
   matchedNodes?: Set<string>;
   visibleNodes?: Set<string>;
   onEditNode?: (node: TreeNode) => void;
-  editingNodeId?: string;
+  editingNodeId?: string | null;
 }
 
 export function Tree({ node, level = 0, onNodeUpdate, expandedNodes, onExpandedNodesChange, arrayIndex, matchedNodes, visibleNodes, onEditNode, editingNodeId }: TreeProps) {
