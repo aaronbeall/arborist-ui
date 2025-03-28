@@ -2,7 +2,7 @@ export type DataFormat = 'json' | 'xml' | 'yaml' | 'javascript';
 
 export type NodeType = 'array' | 'object' | 'property';
 
-export type NodeValue = string | number | boolean;
+export type NodeValue = string | number | boolean | null;
 
 export interface TreeNode {
   id: string;

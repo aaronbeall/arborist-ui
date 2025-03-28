@@ -6,7 +6,7 @@ jest.mock('../../utils/idGenerator', () => ({
 
 import { YamlAdapter } from '../YamlAdapter';
 import { exampleTree, expectedYaml } from '../../test/testData';
-import { removeTreeNodeArrayElementNames, stringifyAllTreeNodeValues } from '../../utils/treeTestUtils';
+import { removeTreeNodeArrayElementNames } from '../../utils/treeTestUtils';
 
 
 describe('YamlAdapter', () => {
@@ -19,7 +19,7 @@ describe('YamlAdapter', () => {
   it('should parse YAML to tree structure', async () => {
     const result = await adapter.parse(expectedYaml);
     const noArrayElementNames = removeTreeNodeArrayElementNames(structuredClone(exampleTree));
-    const allStringValues = stringifyAllTreeNodeValues(noArrayElementNames);
+    const allStringValues = noArrayElementNames;
     expect(result).toEqual(allStringValues);
   });
 

@@ -1,5 +1,5 @@
 import { BaseAdapter } from './BaseAdapter';
-import { DataFormat, TreeNode } from '../types';
+import { DataFormat, NodeValue, TreeNode } from '../types';
 import { parse, stringify } from 'yaml';
 
 type YamlValue = string | number | boolean | null | YamlObject | YamlArray;
@@ -34,7 +34,7 @@ export class YamlAdapter extends BaseAdapter {
         this.convertToTree(value, key)
       ));
     } else {
-      return this.createNode(name, 'property', String(data));
+      return this.createNode(name, 'property', data as NodeValue);
     }
   }
 
