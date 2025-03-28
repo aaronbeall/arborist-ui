@@ -1,6 +1,8 @@
-import { Box, Typography, IconButton, Toolbar, Divider } from '@mui/material';
+import { Box, Typography, IconButton, Toolbar, Divider, Stack } from '@mui/material';
+import { PanelGroup, Panel, PanelResizeHandle } from 'react-resizable-panels';
 import ExpandAllIcon from '@mui/icons-material/UnfoldMore';
 import CollapseAllIcon from '@mui/icons-material/UnfoldLess';
+import DragIndicatorIcon from '@mui/icons-material/DragIndicator';
 import { SearchField } from './SearchField';
 import { TreeNode } from '../types';
 import { Tree } from './Tree';
@@ -195,94 +197,125 @@ export function TreeView({ tree, source, onNodeUpdate }: TreeViewProps) {
   const stats = useMemo(() => tree ? collectStats(tree) : null, [tree]);
 
   return (
-    <Box sx={{ display: 'flex', gap: 2, height: '100%' }}>
-      <Box sx={{ display: 'flex', flexDirection: 'column', flex: 1, overflow: 'hidden' }}>
-        {tree && (
-          <Toolbar
-            variant="dense"
-            sx={{
-              minHeight: 36,
-              borderRadius: 1,
-              bgcolor: 'background.paper',
-              border: 1,
-              borderColor: 'divider',
-              mb: 1,
-              gap: 1,
-              px: 1,
-              justifyContent: 'space-between',
-            }}
-          >
-            <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', flex: 1 }}>
-              <IconButton onClick={handleExpandAll} size="small" title="Expand All">
-                <ExpandAllIcon fontSize="small" />
-              </IconButton>
-              <Divider orientation="vertical" flexItem />
-              <IconButton onClick={handleCollapseAll} size="small" title="Collapse All">
-                <CollapseAllIcon fontSize="small" />
-              </IconButton>
-              <Divider orientation="vertical" flexItem />
-              <SearchField 
-                value={filter}
-                onChange={setFilter}
-              />
-              {filteredNodes && (
+    <PanelGroup direction="horizontal" style={{ overflow: 'visible' }}>
+      <Panel defaultSize={75} minSize={30} style={{ overflow: 'visible' }}>
+        <Box sx={{ 
+          display: 'flex', 
+          flexDirection: 'column',
+          height: '100%',
+        }}>
+          {tree && (
+            <Toolbar
+              variant="dense"
+              sx={{
+                minHeight: 36,
+                borderRadius: 1,
+                bgcolor: 'background.paper',
+                border: 1,
+                borderColor: 'divider',
+                mb: 1,
+                gap: 1,
+                px: 1,
+                justifyContent: 'space-between',
+              }}
+            >
+              <Box sx={{ display: 'flex', gap: 1, alignItems: 'center', flex: 1 }}>
+                <IconButton onClick={handleExpandAll} size="small" title="Expand All">
+                  <ExpandAllIcon fontSize="small" />
+                </IconButton>
+                <Divider orientation="vertical" flexItem />
+                <IconButton onClick={handleCollapseAll} size="small" title="Collapse All">
+                  <CollapseAllIcon fontSize="small" />
+                </IconButton>
+                <Divider orientation="vertical" flexItem />
+                <SearchField 
+                  value={filter}
+                  onChange={setFilter}
+                />
+                {filteredNodes && (
+                  <StatsDisplay 
+                    stats={{
+                      match: filteredNodes.matches.size,
+                      //visible: filteredNodes.visible.size,
+                      'hidden node': stats?.total ? stats.total - filteredNodes.visible.size : 0
+                    }}
+                  />
+                )}
+              </Box>
+              {stats && (
                 <StatsDisplay 
                   stats={{
-                    match: filteredNodes.matches.size,
-                    //visible: filteredNodes.visible.size,
-                    'hidden node': stats?.total ? stats.total - filteredNodes.visible.size : 0
+                    node: stats.total,
+                    object: stats.objects,
+                    array: stats.arrays,
+                    property: stats.properties
                   }}
                 />
               )}
-            </Box>
-            {stats && (
-              <StatsDisplay 
-                stats={{
-                  node: stats.total,
-                  object: stats.objects,
-                  array: stats.arrays,
-                  property: stats.properties
-                }}
-              />
-            )}
-          </Toolbar>
-        )}
-        <Box sx={{ 
-          flex: 1, 
-          overflow: 'auto', 
-          border: 1, 
-          borderColor: 'divider', 
-          borderRadius: 1, 
-          p: 2,
-          bgcolor: 'background.paper',
-        }}>
-          {tree ? (
-            <Tree 
-              node={tree} 
-              onNodeUpdate={onNodeUpdate} 
-              expandedNodes={expandedNodes}
-              onExpandedNodesChange={setExpandedNodes}
-              matchedNodes={filteredNodes?.matches}
-              visibleNodes={filteredNodes?.visible}
-              onEditNode={handleNodeSelect}
-              editingNodeId={editNode?.id}
-            />
-          ) : (
-            <Typography color="text.secondary">
-              {source ? 'Invalid data format. Please check the source tab for errors.' : 'No data to display. Please enter data in the source tab.'}
-            </Typography>
+            </Toolbar>
           )}
+          <Box sx={{ 
+            flex: 1, 
+            overflow: 'auto', 
+            border: 1, 
+            borderColor: 'divider', 
+            borderRadius: 1, 
+            p: 2,
+            bgcolor: 'background.paper',
+          }}>
+            {tree ? (
+              <Tree 
+                node={tree} 
+                onNodeUpdate={onNodeUpdate} 
+                expandedNodes={expandedNodes}
+                onExpandedNodesChange={setExpandedNodes}
+                matchedNodes={filteredNodes?.matches}
+                visibleNodes={filteredNodes?.visible}
+                onEditNode={handleNodeSelect}
+                editingNodeId={editNode?.id}
+              />
+            ) : (
+              <Typography color="text.secondary">
+                {source ? 'Invalid data format. Please check the source tab for errors.' : 'No data to display. Please enter data in the source tab.'}
+              </Typography>
+            )}
+          </Box>
         </Box>
-      </Box>
+      </Panel>
+      
       {editNode && (
-        <EditPanel 
-          node={editNode}
-          onClose={handleCloseEditPanel}
-          onNodeSelect={handleNodeSelect}
-          parentNodes={nodeParentPath}
-          onNodeUpdate={onNodeUpdate}
-        />
+        <>
+          <PanelResizeHandle>
+            <Box sx={{
+              height: '100%',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              opacity: 0.3,
+              transition: 'opacity 0.2s',
+              '&:hover': {
+                opacity: 1
+              }
+            }}>
+              <DragIndicatorIcon 
+                sx={{ 
+                  color: 'text.secondary',
+                  fontSize: '20px'
+                }} 
+              />
+            </Box>
+          </PanelResizeHandle>
+          <Panel defaultSize={25} minSize={20} style={{ overflow: 'visible' }}>
+              <EditPanel 
+                node={editNode}
+                onClose={handleCloseEditPanel}
+                onNodeSelect={handleNodeSelect}
+                parentNodes={nodeParentPath}
+                onNodeUpdate={onNodeUpdate}
+              />
+          </Panel>
+        </>
       )}
-    </Box>
+    </PanelGroup>
   );
 }

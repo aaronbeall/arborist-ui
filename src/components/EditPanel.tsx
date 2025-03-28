@@ -62,7 +62,7 @@ export function EditPanel({ node, onClose, onNodeSelect, parentNodes = [], onNod
     <Paper 
       elevation={3}
       sx={{ 
-        width: 300,
+        width: '100%',
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
