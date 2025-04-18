@@ -1,4 +1,3 @@
-import { Box } from '@mui/material';
 import { EditableText } from './EditableText';
 import { TreeNode } from '../types';
 
