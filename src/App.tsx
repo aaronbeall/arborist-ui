@@ -138,7 +138,7 @@ function App() {
 
   const handleNodeEdit = useCallback(async (editedNode: TreeNode) => {
     if (!tree) return;
-    
+
     const updateNode = (node: TreeNode): TreeNode => {
       if (node.id === editedNode.id) {
         return editedNode;
@@ -154,7 +154,7 @@ function App() {
 
     const newTree = updateNode(tree);
     setTree(newTree);
-    
+
     try {
       setError(null);
       const adapter = formats[format].adapter;
@@ -194,8 +194,8 @@ function App() {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Box 
-        sx={{ 
+      <Box
+        sx={{
           height: '100vh',
           display: 'flex',
           flexDirection: 'column',
@@ -203,7 +203,7 @@ function App() {
           overflow: 'hidden'
         }}
       >
-        <Paper 
+        <Paper
           elevation={3}
           sx={{
             position: 'sticky',
@@ -222,8 +222,8 @@ function App() {
                     arborist <b>ui</b>
                   </Typography>
                   <Divider orientation="vertical" flexItem />
-                  <Typography variant="subtitle1" component="h2" color="secondary">
-                    Tree Data Editor, Formatter & Convertor
+                  <Typography variant="subtitle2" component="h2" color="secondary">
+                    <code>JSON, YAML, XML, more...</code> <code>Viewer, Editor, Formatter, Convertor</code>
                   </Typography>
                 </Box>
               </Box>
@@ -238,7 +238,7 @@ function App() {
           <Tabs value={selectedTab} onChange={handleTabChange}>
             <Tab label="Source" value="sourceText" />
             <Tab label="Tree" value="treeView" />
-            <Tab 
+            <Tab
               label={
                 <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                   Graph
@@ -255,11 +255,11 @@ function App() {
           </Tabs>
         </Box>
 
-        <Box sx={{ 
-          flex: 1, 
-          display: 'flex', 
-          flexDirection: 'column', 
-          p: 3, 
+        <Box sx={{
+          flex: 1,
+          display: 'flex',
+          flexDirection: 'column',
+          p: 3,
           overflow: 'auto',
           height: selectedTab === 'graph' ? 'calc(100vh - 180px)' : 'auto'
         }}>
