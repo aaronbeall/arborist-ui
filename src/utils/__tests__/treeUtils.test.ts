@@ -1,5 +1,5 @@
 import { TreeNode } from '../../types';
-import { findNodeById, findParentPath, getFilteredNodes, collectAllIds } from '../treeUtils';
+import { findNodeById, findParentPath, getFilteredNodes, collectAllIds, getUniqueKeyName } from '../treeUtils';
 
 const sampleTree: TreeNode = {
   id: 'root',
@@ -70,5 +70,34 @@ describe('collectAllIds', () => {
     expect(ids.has('a2')).toBe(true);
     expect(ids.has('b')).toBe(true);
     expect(ids.has('b1')).toBe(true);
+  });
+});
+
+describe('getUniqueKeyName', () => {
+  const nodeWithChildren: TreeNode = {
+    id: 'test',
+    name: 'test',
+    type: 'object',
+    children: [
+      { id: '1', name: 'foo', type: 'property' },
+      { id: '2', name: 'foo1', type: 'property' },
+      { id: '3', name: 'bar', type: 'property' }
+    ]
+  };
+
+  it('should return original key if no conflict', () => {
+    expect(getUniqueKeyName('baz', nodeWithChildren)).toBe('baz');
+  });
+
+  it('should append number for duplicate key', () => {
+    expect(getUniqueKeyName('foo', nodeWithChildren)).toBe('foo2');
+  });
+
+  it('should handle already numbered keys', () => {
+    expect(getUniqueKeyName('foo1', nodeWithChildren)).toBe('foo11');
+  });
+
+  it('should append 1 to existing name without number', () => {
+    expect(getUniqueKeyName('bar', nodeWithChildren)).toBe('bar1');
   });
 });

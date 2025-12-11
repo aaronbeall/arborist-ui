@@ -116,3 +116,17 @@ export function collectAllIds(node: TreeNode): Set<string> {
   visit(node);
   return allIds;
 }
+
+export function getUniqueKeyName(desiredKey: string, node: TreeNode): string {
+  if (!node.children?.some(child => child.name === desiredKey)) {
+    return desiredKey;
+  }
+
+  let counter = 1;
+  let newKey = `${desiredKey}${counter}`;
+  while (node.children?.some(child => child.name === newKey)) {
+    counter++;
+    newKey = `${desiredKey}${counter}`;
+  }
+  return newKey;
+}
