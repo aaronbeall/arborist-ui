@@ -2,6 +2,8 @@
 
 A modern web application for visualizing and editing hierarchical data structures in various formats (JSON, XML, YAML).
 
+### [Arborist UI - Live App](https://aaronbeall.github.io/arborist-ui)
+
 ## Features
 
 - Automatic format detection
@@ -9,8 +11,6 @@ A modern web application for visualizing and editing hierarchical data structure
 - Interactive tree visualization
 - Inline editing of node values
 - Real-time synchronization between source and tree views
-- Modern, responsive UI with Tailwind CSS
-- Accessible components with Radix UI
 
 ## Getting Started
 

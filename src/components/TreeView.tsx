@@ -1,4 +1,4 @@
-import { Box, Typography, IconButton, Toolbar, Divider, Stack } from '@mui/material';
+import { Box, Typography, IconButton, Toolbar, Divider } from '@mui/material';
 import { PanelGroup, Panel, PanelResizeHandle } from 'react-resizable-panels';
 import ExpandAllIcon from '@mui/icons-material/UnfoldMore';
 import CollapseAllIcon from '@mui/icons-material/UnfoldLess';
