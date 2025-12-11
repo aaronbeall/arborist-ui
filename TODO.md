@@ -4,15 +4,24 @@
 - [x] Search/filter
 - [ ] Find and replace
 - [ ] Rename/add/delete on tree view
+- [ ] Show child preview on parent nodes
 - [ ] Drag-and-drop on tree view
-- [ ] Format: Indented Plain Text
+- [ ] Copy/Paste of nodes
+- [ ] Source view in node edit panel
+- [ ] Format: Indented (Plain Text)
 - [ ] Format: CSV -- use a parent column for hierarchy
 - [ ] Format: .properties
 - [ ] Format: .env
 - [ ] Format: GraphQL
 - [ ] Format: Markdown
 - [ ] Format: Math/Parens/Brackets
+- [ ] Format: JSON5 and JSONC
 - [ ] Handle attributes in XML
+- [ ] Handle comments parsing/editing/output
+- [ ] Dummy data generator -- AI
+- [ ] AI Cleanup
+- [ ] Undo/Redo
+- [ ] Recents in local storage (delete, pin, rename)
 - [ ] Schemas
 - [ ] Sharing/data collection/doc management -- user accounts?
 - [ ] Export/Import file
@@ -22,4 +31,3 @@
 - [ ] Credits/donation/SSO
 - [x] Graph view
 - [ ] Editing on graph vuew
-- [ ] AI Dummy data generator
