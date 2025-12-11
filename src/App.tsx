@@ -1,7 +1,7 @@
 import { useState, useCallback, useEffect, useMemo } from 'react';
 import { ThemeProvider, createTheme } from '@mui/material/styles';
-import { CssBaseline, Box, Tab, Tabs, Typography, Alert, IconButton, useMediaQuery, Paper, Divider, Chip } from '@mui/material';
-import { Brightness4, Brightness7 } from '@mui/icons-material';
+import { CssBaseline, Box, Tab, Tabs, Typography, Alert, IconButton, useMediaQuery, Paper, Divider, Chip, Menu, MenuItem, Dialog, DialogTitle, DialogContent, DialogActions, Button, Link, List, ListItemButton, ListItemIcon, ListItemText } from '@mui/material';
+import { Brightness4, Brightness7, MoreVert, Email } from '@mui/icons-material';
 import { DataFormat, TreeNode } from './types';
 import { formats, validateFormat } from './config/formats';
 import { exampleTree } from './test/testData';
@@ -9,6 +9,8 @@ import { SourceTextView } from './components/SourceTextView';
 import { TreeView } from './components/TreeView';
 import { GraphView } from './components/GraphView';
 import logo from './assets/logo.svg';
+import BuyMeACoffeeIcon from './assets/buymeacoffee.svg?react';
+import PatreonIcon from './assets/patreon.svg?react';
 
 type TabName = 'sourceText' | 'treeView' | 'graph';
 
@@ -54,6 +56,8 @@ function App() {
   const [selectedTab, setSelectedTab] = useState<TabName>('sourceText');
   const [lastParsedSource, setLastParsedSource] = useState('');
   const [error, setError] = useState<string | null>(null);
+  const [menuAnchorEl, setMenuAnchorEl] = useState<null | HTMLElement>(null);
+  const [aboutOpen, setAboutOpen] = useState(false);
 
   const updateTree = useCallback(async (newSource: string, newFormat: DataFormat) => {
     try {
@@ -191,6 +195,27 @@ function App() {
     }
   }, [selectedTab, source, format, lastParsedSource, updateTree]);
 
+  const openMenu = (e: React.MouseEvent<HTMLElement>) => setMenuAnchorEl(e.currentTarget);
+  const closeMenu = () => setMenuAnchorEl(null);
+
+  const openAbout = () => { setAboutOpen(true); closeMenu(); };
+  const closeAbout = () => setAboutOpen(false);
+
+  const openContact = () => {
+    window.location.href = 'mailto:support@metamodernmonkey.com?subject=Arborist%20UI';
+    closeMenu();
+  };
+
+  const openPatreon = () => {
+    window.open('https://www.patreon.com/metamodernmonkey', '_blank', 'noopener,noreferrer');
+    closeMenu();
+  };
+
+  const openCoffee = () => {
+    window.open('https://www.buymeacoffee.com/metamodernmonkey', '_blank', 'noopener,noreferrer');
+    closeMenu();
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -227,9 +252,26 @@ function App() {
                   </Typography>
                 </Box>
               </Box>
-              <IconButton onClick={() => setDarkMode(!darkMode)} color="inherit">
-                {darkMode ? <Brightness7 /> : <Brightness4 />}
-              </IconButton>
+              <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                <IconButton onClick={() => setDarkMode(!darkMode)} color="inherit">
+                  {darkMode ? <Brightness7 /> : <Brightness4 />}
+                </IconButton>
+                <IconButton onClick={openMenu} color="inherit" aria-label="App menu">
+                  <MoreVert />
+                </IconButton>
+                <Menu
+                  anchorEl={menuAnchorEl}
+                  open={Boolean(menuAnchorEl)}
+                  onClose={closeMenu}
+                  anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
+                  transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+                >
+                  <MenuItem onClick={openAbout}>About</MenuItem>
+                  <MenuItem onClick={openContact}>Contact</MenuItem>
+                  <MenuItem onClick={openPatreon}>Support on Patreon</MenuItem>
+                  <MenuItem onClick={openCoffee}>Buy Me a Coffee</MenuItem>
+                </Menu>
+              </Box>
             </Box>
           </Box>
         </Paper>
@@ -292,6 +334,46 @@ function App() {
             <GraphView tree={tree} />
           )}
         </Box>
+
+        <Dialog open={aboutOpen} onClose={closeAbout} aria-labelledby="about-dialog-title">
+          <DialogTitle id="about-dialog-title">About Arborist UI</DialogTitle>
+          <DialogContent dividers>
+            <Typography gutterBottom>
+              Built with ❤️ and 🍌 by <Link href="https://metamodernmonkey.com" target="_blank" rel="noopener noreferrer">Meta Modern Monkey</Link>.
+            </Typography>
+
+            <List dense sx={{ mt: 1 }}>
+              <ListItemButton onClick={openContact}>
+                <ListItemIcon><Email /></ListItemIcon>
+                <ListItemText
+                  primary="Contact"
+                  secondary="support@metamodernmonkey.com"
+                />
+              </ListItemButton>
+              <ListItemButton onClick={openPatreon} component="a" href="https://www.patreon.com/metamodernmonkey" target="_blank" rel="noopener noreferrer">
+                <ListItemIcon>
+                  <PatreonIcon style={{ width: 20, height: 20, color: darkMode ? '#fff' : '#757575' }} />
+                </ListItemIcon>
+                <ListItemText
+                  primary="Support on Patreon"
+                  secondary="patreon.com/metamodernmonkey"
+                />
+              </ListItemButton>
+              <ListItemButton onClick={openCoffee} component="a" href="https://www.buymeacoffee.com/metamodernmonkey" target="_blank" rel="noopener noreferrer">
+                <ListItemIcon>
+                  <BuyMeACoffeeIcon style={{ width: 20, height: 20, color: darkMode ? '#fff' : '#757575' }} />
+                </ListItemIcon>
+                <ListItemText
+                  primary="Buy Me a Coffee"
+                  secondary="buymeacoffee.com/metamodernmonkey"
+                />
+              </ListItemButton>
+            </List>
+          </DialogContent>
+          <DialogActions>
+            <Button onClick={closeAbout}>Close</Button>
+          </DialogActions>
+        </Dialog>
       </Box>
     </ThemeProvider>
   );
